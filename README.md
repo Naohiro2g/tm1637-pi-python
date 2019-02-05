@@ -1,3 +1,9 @@
+CLK=20, DIO=21
+7セグLEDは、12ピンだと時計用コロンと小数点4つの両方を表示できず、内部結線されていないか、素子自体が存在しない模様。入手したモジュールもピンに直接電圧を加えて調べたが、小数点につながるピンは無かった。
+
+7セグ（7本）、小数点（1本）、コモン（4本）、コロン（1本）、合計13本になる。。
+14ピンでコロンを5桁目に収容している物、16ピンでコロン2点、アポストロフィ1点の3点を結線してあるものなどがある。連結用に左端にもコロンがあるものもある。
+
 # tm1637-pi-python
 A modification to Tim Waizenegger's tm1637.py library for simple TM1637 operation via raspberry pi. Full credit to Waizenegger for a majority of the library. View the original material here: https://github.com/timwaizenegger/raspberrypi-examples/blob/master/actor-led-7segment-4numbers/tm1637.py
 This version of the library simply includes a new ShowScroll function which allows the user to display an integer of any length on the TM1637.
