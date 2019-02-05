@@ -2,11 +2,14 @@ import math
 import RPi.GPIO as IO
 import threading
 from time import sleep, localtime
-# from tqdm import tqdm
+#
+from tqdm import tqdm
 
 # IO.setwarnings(False)
 IO.setmode(IO.BCM)
 
+# 0,1,2,3,4,5,6,
+# 7,8,9,A,b,C,d,E,F
 HexDigits = [0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d,
              0x07, 0x7f, 0x6f, 0x77, 0x7c, 0x39, 0x5e, 0x79, 0x71]
 
@@ -20,7 +23,7 @@ class TM1637:
     __doublePoint = False
     __Clkpin = 0
     __Datapin = 0
-    __brightness = 1.0  # default to max brightness
+    __brightness = 3.0
     __currentData = [0, 0, 0, 0]
 
     def __init__(self, CLK, DIO, brightness):
@@ -39,7 +42,7 @@ class TM1637:
     def Clear(self):
         b = self.__brightness
         point = self.__doublePoint
-        self.__brightness = 0
+        self.__brightness = 3
         self.__doublePoint = False
         data = [0x7F, 0x7F, 0x7F, 0x7F]
         self.Show(data)
@@ -165,38 +168,53 @@ class TM1637:
             data = HexDigits[data] + pointData
         return data
 
-    def clock(self, military_time):
+    def clock(self, military_time, min_sec):
         """Clock script modified from:
             https://github.com/johnlr/raspberrypi-tm1637"""
         self.ShowDoublepoint(True)
         while (not self.__stop_event.is_set()):
             t = localtime()
-            hour = t.tm_hour
-            if not military_time:
-                hour = 12 if (t.tm_hour % 12) == 0 else t.tm_hour % 12
-            d0 = hour // 10 if hour // 10 else 0
-            d1 = hour % 10
-            d2 = t.tm_min // 10
-            d3 = t.tm_min % 10
+
+            if min_sec:
+                d0 = t.tm_min //10
+                d1 = t.tm_min % 10
+                d2 = t.tm_sec // 10
+                d3 = t.tm_sec % 10
+            else:
+                hour = t.tm_hour
+                if not military_time:
+                    hour = 12 if (t.tm_hour % 12) == 0 else t.tm_hour % 12
+                d0 = hour // 10 if hour // 10 else 0
+                d1 = hour % 10
+                d2 = t.tm_min // 10
+                d3 = t.tm_min % 10
+
             digits = [d0, d1, d2, d3]
             self.Show(digits)
-            # # Optional visual feedback of running alarm:
-            # print digits
-            # for i in tqdm(range(60 - t.tm_sec)):
-            for i in range(60 - t.tm_sec):
+
+            if not min_sec:
+                # # Optional visual feedback of running alarm:
+                # print digits
+                #for i in tqdm(range(60 - t.tm_sec)):
+                #    if (not self.__stop_event.is_set()):
+                #        sleep(1)
                 if (not self.__stop_event.is_set()):
                     sleep(1)
+            else:
+                if (not self.__stop_event.is_set()):
+                    sleep(0.1)
 
-    def StartClock(self, military_time=True):
+    def StartClock(self, military_time=True, min_sec=True):
         # Stop event based on: http://stackoverflow.com/a/6524542/3219667
         self.__stop_event = threading.Event()
         self.__clock_thread = threading.Thread(
-            target=self.clock, args=(military_time,))
+            target=self.clock, args=(military_time, min_sec))
         self.__clock_thread.start()
 
     def StopClock(self):
+        self.ShowDoublepoint(False)
         try:
-            print 'Attempting to stop live clock'
+            print('Attempting to stop live clock')
             self.__stop_event.set()
         except:
-            print 'No clock to close'
+            print('No clock to close')
