@@ -1,8 +1,16 @@
-CLK=20, DIO=21
-7セグLEDは、12ピンだと時計用コロンと小数点4つの両方を表示できず、内部結線されていないか、素子自体が存在しない模様。入手したモジュールもピンに直接電圧を加えて調べたが、小数点につながるピンは無かった。
+7セグLEDを6桁まで表示できるドライバーICTM1637をRaspberry Piで使うためのPythonライブラリ。
+https://www.mcielectronics.cl/website_MCI/static/documents/Datasheet_TM1637.pdf
 
-7セグ（7本）、小数点（1本）、コモン（4本）、コロン（1本）、合計13本になる。。
+TM1637を利用した4桁7セグLEDモジュールが安価で手に入り、I2Cで簡単に接続できる。Arduino用として5V電源仕様で販売されているが、Raspberry Piの3.3V電源で使用できる。Raspberry Piの5V電源を接続しても一応動くが、電圧ミスマッチのため誤動作したり、最悪のケースではRaspberry PiのGPIOが壊れるので、つないではいけない。
+
+ここでのGPIO接続は、CLK=20, DIO=21
+
+4桁7セグLEDモジュールは、12ピンではピン数が足りず、時計用コロンと小数点4つの両方を表示できない。内部結線されていないか、素子自体が存在しない模様。入手したモジュールもピンに直接電圧を加えて調べたが、小数点につながるピンが無い時計表示専用だった。
+
+7セグ（7本）、小数点（1本）、コモン（4本）、コロン（1本）、合計すると13本になる。
 14ピンでコロンを5桁目に収容している物、16ピンでコロン2点、アポストロフィ1点の3点を結線してあるものなどがある。連結用に左端にもコロンがあるものもある。
+
+このリポジトリのtm1673.pyをgpio-recipesで使用している。https://github.com/Naohiro2g/gpiozero-recipes
 
 # tm1637-pi-python
 A modification to Tim Waizenegger's tm1637.py library for simple TM1637 operation via raspberry pi. Full credit to Waizenegger for a majority of the library. View the original material here: https://github.com/timwaizenegger/raspberrypi-examples/blob/master/actor-led-7segment-4numbers/tm1637.py
