@@ -10,7 +10,14 @@ TM1637を利用した4桁7セグLEDモジュールが安価で手に入り、I2C
 7セグ（7本）、小数点（1本）、コモン（4本）、コロン（1本）、合計すると13本になる。
 14ピンでコロンを5桁目に収容している物、16ピンでコロン2点、アポストロフィ1点の3点を結線してあるものなどがある。連結用に左端にもコロンがあるものもある。
 
-このリポジトリのtm1673.pyをgpio-recipesで使用している。https://github.com/Naohiro2g/gpiozero-recipes
+このリポジトリのtm1673.pyをgpio-recipesで使用している。
+
+```
+https://github.com/Naohiro2g/gpiozero-recipes
+https://github.com/Naohiro2g/gpiozero-recipes/blob/master/07-distance-sensor-02.py
+```
+
+## 配線
 
 PI | TM1637 Display
 --- | --- 
@@ -18,6 +25,8 @@ GPIO 20 | CLK
 GPIO 21 | DIO
 3.3V | 5V
 GND | GND
+
+## デモ
 
 ```
 sudo python3 tm1637_exploration.py
