@@ -12,6 +12,19 @@ TM1637を利用した4桁7セグLEDモジュールが安価で手に入り、I2C
 
 このリポジトリのtm1673.pyをgpio-recipesで使用している。https://github.com/Naohiro2g/gpiozero-recipes
 
+PI | TM1637 Display
+--- | --- 
+GPIO 23 | CLK
+GPIO 24 | DIO
+3.3V | 5V
+GND | GND
+
+```
+sudo python3 tm1637_exploration.py
+```
+
+
+
 # tm1637-pi-python
 A modification to Tim Waizenegger's tm1637.py library for simple TM1637 operation via raspberry pi. Full credit to Waizenegger for a majority of the library. View the original material here: https://github.com/timwaizenegger/raspberrypi-examples/blob/master/actor-led-7segment-4numbers/tm1637.py
 This version of the library simply includes a new ShowScroll function which allows the user to display an integer of any length on the TM1637.
