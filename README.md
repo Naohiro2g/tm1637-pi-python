@@ -14,8 +14,8 @@ TM1637を利用した4桁7セグLEDモジュールが安価で手に入り、I2C
 
 PI | TM1637 Display
 --- | --- 
-GPIO 23 | CLK
-GPIO 24 | DIO
+GPIO 20 | CLK
+GPIO 21 | DIO
 3.3V | 5V
 GND | GND
 
