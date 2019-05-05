@@ -2,7 +2,7 @@ import tm1637
 import time
 import RPi.GPIO as GPIO
 
-# Simply change the CLK and DIO pin numbers of 23 and 24 to match the Pi GPIO pins you've used.
+# Simply change the CLK and DIO pin numbers of 20 and 21 to match the Pi GPIO pins you've used.
 display = tm1637.TM1637(CLK=20, DIO=21, brightness=7)
 display.Clear()
 
